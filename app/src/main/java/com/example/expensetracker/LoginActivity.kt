@@ -40,10 +40,12 @@ class LoginActivity : AppCompatActivity() {
                     val response = ApiClient.apiService.login(LoginRequest(username, password))
                     if (response.isSuccessful) {
                         response.body()?.let { loginResponse ->
-                            // Зберігаємо токен
+                            // Save token
                             TokenManager.saveToken(this@LoginActivity, loginResponse.access_token)
+                            // Save username
+                            TokenManager.saveUsername(this@LoginActivity, username)
 
-                            // Переходимо на головний екран
+                            // Navigate to main screen
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         } ?: run {

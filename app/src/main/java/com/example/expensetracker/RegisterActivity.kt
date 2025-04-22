@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import com.example.expensetracker.RegisterRequest
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,7 +24,12 @@ class RegisterActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    val response = ApiClient.apiService.register(RegisterRequest(username, password))
+                    val request = RegisterRequest(
+                        username = username,
+                        email = "",
+                        password = password
+                    )
+                    val response = ApiClient.apiService.register(request)
                     if (response.isSuccessful) {
                         Toast.makeText(this@RegisterActivity, "Registration successful", Toast.LENGTH_SHORT).show()
                         finish()

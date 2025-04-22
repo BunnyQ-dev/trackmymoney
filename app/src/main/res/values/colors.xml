@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Основні кольори теми -->
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="accent">#8BC34A</color>
+    
+    <!-- Фонові кольори -->
+    <color name="background">#F0F0F0</color>
+    <color name="background_light">#FAFAFA</color>
+    <color name="card_background">#FFFFFF</color>
+    
+    <!-- Текстові кольори -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+    
+    <!-- Функціональні кольори -->
+    <color name="expense_color">#E53935</color>  <!-- Червоний для витрат -->
+    <color name="income_color">#43A047</color>   <!-- Зелений для доходів -->
 </resources>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_currency"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/currencyRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/uahRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UAH (₴)"
+                android:checked="true"
+                android:padding="8dp"/>
+
+            <RadioButton
+                android:id="@+id/usdRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USD ($)"
+                android:padding="8dp"/>
+
+            <RadioButton
+                android:id="@+id/eurRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="EUR (€)"
+                android:padding="8dp"/>
+
+            <RadioButton
+                android:id="@+id/gbpRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GBP (£)"
+                android:padding="8dp"/>
+
+            <RadioButton
+                android:id="@+id/plnRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PLN (zł)"
+                android:padding="8dp"/>
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@android:string/cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveCurrencyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@android:string/ok" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView> 

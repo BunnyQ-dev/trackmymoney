@@ -51,8 +51,8 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation ("androidx.security:security-crypto:1.1.0-alpha03")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-
-
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

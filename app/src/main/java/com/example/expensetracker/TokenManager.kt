@@ -5,6 +5,7 @@ import android.content.Context
 object TokenManager {
     private const val PREF_NAME = "expense_prefs"
     private const val KEY_TOKEN = "auth_token"
+    private const val KEY_USERNAME = "username"
 
     fun getToken(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -30,5 +31,18 @@ object TokenManager {
     fun getAuthHeader(context: Context): String? {
         val token = getToken(context)
         return if (token != null) "Bearer $token" else null
+    }
+    
+    fun saveUsername(context: Context, username: String) {
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString(KEY_USERNAME, username)
+            apply()
+        }
+    }
+    
+    fun getUsername(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(KEY_USERNAME, null)
     }
 }

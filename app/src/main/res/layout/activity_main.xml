@@ -4,77 +4,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/background_light"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add New Expense"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <!-- Toolbar розміщений вгорі макета, але з додатковим відступом зверху -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/primary"
+        android:elevation="4dp"
+        android:paddingTop="8dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp" />
+        app:title="TrackMyMoney"
+        app:titleTextColor="@android:color/white" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/categoryLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <!-- TabLayout розміщений одразу під toolbar -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="Category"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText">
+        android:background="@color/primary"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:tabIndicatorColor="@android:color/white"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@android:color/white" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/category"
+    <!-- Картка з балансом -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/balanceCard"
+        style="@style/AppCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/amountLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Amount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryLayout">
+            <TextView
+                android:id="@+id/balanceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_balance"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/balanceAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₴0.00"
+                android:textColor="@color/primary"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/balanceLabel" />
 
-    <Button
-        android:id="@+id/addExpenseButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="12dp"
-        android:text="Add Expense"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amountLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/expensesRecyclerView"
-        android:layout_width="match_parent"
+    <!-- ViewPager2 для фрагментів -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addExpenseButton"
-        tools:listitem="@layout/item_expense" />
+        app:layout_constraintTop_toBottomOf="@id/balanceCard" />
+
+    <!-- Діалог доходів (прихований) -->
+    <include
+        android:id="@+id/incomeDialog"
+        layout="@layout/dialog_add_income"
+        android:visibility="gone" />
+
+    <!-- FAB для налаштувань -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/settings"
+        android:src="@drawable/ic_settings"
+        app:backgroundTint="@color/accent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@android:color/white" />
+
+    <!-- Горизонтальна направляюча для позиціонування FAB -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
