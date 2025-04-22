@@ -41,11 +41,6 @@ class MainActivity : AppCompatActivity(),
         
         setupUI()
         loadBalance()
-        
-        // Оновлюємо символи валют при запуску
-        binding.viewPager.post {
-            updateCurrencySymbolsInFragments()
-        }
     }
     
     private fun setupUI() {
@@ -249,7 +244,7 @@ class MainActivity : AppCompatActivity(),
     
 
     private fun updateCurrencySymbolsInFragments() {
-
+        // Безпечно оновлюємо символи валют у фрагментах, тільки якщо вони прикріплені до контексту
         fragments.forEach { fragment ->
             when (fragment) {
                 is ExpenseFragment -> fragment.updateCurrencySymbol()
@@ -257,6 +252,12 @@ class MainActivity : AppCompatActivity(),
                 is GoalsFragment -> fragment.updateCurrencyDisplay()
             }
         }
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Оновлюємо символи валют при поверненні до активності
+        updateCurrencySymbolsInFragments()
     }
     
     private fun logout() {

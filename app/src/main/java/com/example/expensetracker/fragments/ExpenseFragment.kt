@@ -58,6 +58,7 @@ class ExpenseFragment : Fragment() {
     
     // New method to update currency symbol
     fun updateCurrencySymbol() {
+        if (!isAdded) return
         val currencySymbol = CurrencyManager.getCurrencySymbol(requireContext())
         binding.amountLayout.prefixText = currencySymbol
     }

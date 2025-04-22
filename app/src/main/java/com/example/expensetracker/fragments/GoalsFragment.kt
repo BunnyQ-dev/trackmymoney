@@ -124,6 +124,7 @@ class GoalsFragment : Fragment() {
     }
 
     fun updateCurrencyDisplay() {
+        if (!isAdded) return
         goalsAdapter.notifyDataSetChanged()
     }
 
