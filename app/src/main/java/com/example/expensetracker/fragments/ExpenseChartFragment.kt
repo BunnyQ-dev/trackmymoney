@@ -92,7 +92,7 @@ class ExpenseChartFragment : Fragment() {
                             entries.add(PieEntry(amount.toFloat(), category))
                         }
 
-                        val dataSet = PieDataSet(entries, "Категорії витрат")
+                        val dataSet = PieDataSet(entries, "Expense categories")
                         dataSet.sliceSpace = 3f
                         dataSet.selectionShift = 5f
 
@@ -115,10 +115,10 @@ class ExpenseChartFragment : Fragment() {
                         binding.expensePieChart.invalidate()
                     }
                 } else {
-                    Toast.makeText(context, "Помилка завантаження даних", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Error loading data", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "Помилка: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
