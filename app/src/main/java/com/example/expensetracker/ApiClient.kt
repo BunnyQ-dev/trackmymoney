@@ -15,10 +15,10 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
     // Use 10.0.2.2 for Android Emulator to connect to localhost
-    //private const val BASE_URL = "http://10.0.2.2:8000/"
+    private const val BASE_URL = "http://10.0.2.2:8000/"
 
     // using Tailscale android ip
-    private const val BASE_URL = "http://100.90.114.28:8000/"
+    //private const val BASE_URL = "http://100.90.114.28:8000/"
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(Date::class.java, object : JsonDeserializer<Date> {
