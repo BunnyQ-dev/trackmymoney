@@ -15,6 +15,7 @@ import com.example.expensetracker.R
 import com.example.expensetracker.TokenManager
 import com.example.expensetracker.databinding.FragmentExpenseBinding
 import kotlinx.coroutines.launch
+import android.view.inputmethod.InputMethodManager
 
 class ExpenseFragment : Fragment() {
 
@@ -152,12 +153,21 @@ class ExpenseFragment : Fragment() {
                         }
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(context, getString(R.string.error, e.message), Toast.LENGTH_SHORT).show()
+                    // Ignoring exception during adding expense
                 }
             }
-        } catch (e: NumberFormatException) {
-            Toast.makeText(context, getString(R.string.enter_valid_amount), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            // Ignoring exception during adding expense
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Hide keyboard and clear focus to prevent Ime callback errors
+        binding.category.clearFocus()
+        binding.amount.clearFocus()
+        val imm = requireContext().getSystemService(InputMethodManager::class.java)
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
     override fun onDestroyView() {

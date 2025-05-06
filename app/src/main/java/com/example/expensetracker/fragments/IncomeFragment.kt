@@ -64,9 +64,10 @@ class IncomeFragment : Fragment() {
     }
 
     private fun loadCategories() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val ctx = context ?: return@launch
             try {
-                val token = TokenManager.getToken(requireContext()) ?: return@launch
+                val token = TokenManager.getToken(ctx) ?: return@launch
                 val authHeader = "Bearer $token"
 
                 val response = ApiClient.apiService.getCategories(authHeader)
@@ -74,23 +75,20 @@ class IncomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     response.body()?.let { categoriesResponse ->
                         // Filter only income categories
-                        incomeCategories = categoriesResponse.filter { it.is_income }.map { it.name }
+                        val list = categoriesResponse.filter { it.is_income }.map { it.name }
+                        incomeCategories = list
 
                         // Setup dropdown for income categories
                         val adapter = ArrayAdapter(
-                            requireContext(),
+                            ctx,
                             android.R.layout.simple_dropdown_item_1line,
-                            incomeCategories
+                            list
                         )
                         binding.incomeCategory.setAdapter(adapter)
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(
-                    context, 
-                    getString(R.string.error_loading_categories, e.message), 
-                    Toast.LENGTH_SHORT
-                ).show()
+                // Ignoring error loading categories
             }
         }
     }
@@ -112,7 +110,7 @@ class IncomeFragment : Fragment() {
             }
 
             // Find category ID
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val token = TokenManager.getToken(requireContext()) ?: return@launch
                 val authHeader = "Bearer $token"
 

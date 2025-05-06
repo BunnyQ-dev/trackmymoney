@@ -1,5 +1,6 @@
 package com.example.expensetracker.fragments
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.ApiClient
+import com.example.expensetracker.LoginActivity
 import com.example.expensetracker.TokenManager
 import com.example.expensetracker.databinding.FragmentExpenseChartBinding
 import com.github.mikephil.charting.data.PieData
@@ -65,8 +67,14 @@ class ExpenseChartFragment : Fragment() {
     
     fun loadChartData() {
         lifecycleScope.launch {
+            // Redirect to login if user not authenticated
+            val token = TokenManager.getToken(requireContext())
+            if (token == null) {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                requireActivity().finish()
+                return@launch
+            }
             try {
-                val token = TokenManager.getToken(requireContext()) ?: return@launch
                 val authHeader = "Bearer $token"
                 
                 val response = ApiClient.apiService.getTransactions(authHeader)
@@ -115,12 +123,17 @@ class ExpenseChartFragment : Fragment() {
                         binding.expensePieChart.invalidate()
                     }
                 } else {
-                    Toast.makeText(context, "Error loading data", Toast.LENGTH_SHORT).show()
+                    // Error loading data silently
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Ignoring exception during chart loading
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadChartData()
     }
 
     override fun onDestroyView() {

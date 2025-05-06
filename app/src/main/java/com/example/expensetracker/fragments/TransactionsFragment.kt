@@ -1,5 +1,6 @@
 package com.example.expensetracker.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.ApiClient
+import com.example.expensetracker.LoginActivity
 import com.example.expensetracker.TokenManager
 import com.example.expensetracker.adapters.TransactionAdapter
 import com.example.expensetracker.databinding.FragmentTransactionsBinding
@@ -153,53 +155,47 @@ class TransactionsFragment : Fragment() {
     fun loadTransactions() {
         binding.progressBar.visibility = View.VISIBLE
         binding.noTransactionsText.visibility = View.GONE
-        
+
         lifecycleScope.launch {
-            try {
-                val token = TokenManager.getToken(requireContext()) ?: run {
-                    binding.progressBar.visibility = View.GONE
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(requireContext(), "not authorized", Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
-                
-                val authHeader = "Bearer $token"
-                val response = ApiClient.apiService.getTransactions(authHeader)
-                
-                binding.progressBar.visibility = View.GONE
-                binding.swipeRefreshLayout.isRefreshing = false
-                
-                if (response.isSuccessful) {
-                    response.body()?.let { transactions ->
-                        transactionList = transactions.map { transaction ->
-                            TransactionItem(
-                                id = transaction.id,
-                                category = transaction.category,
-                                amount = transaction.amount,
-                                date = transaction.date,
-                                isExpense = transaction.type == "expense"
-                            )
-                        }
-                        
-                        // Apply filtering and sorting
-                        applySortAndFilter()
+            // Redirect to login if user not authenticated
+            val token = TokenManager.getToken(requireContext())
+            if (token == null) {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                requireActivity().finish()
+                return@launch
+            }
+            binding.progressBar.visibility = View.GONE
+            binding.swipeRefreshLayout.isRefreshing = false
+
+            val authHeader = "Bearer $token"
+            val response = ApiClient.apiService.getTransactions(authHeader)
+
+            binding.progressBar.visibility = View.GONE
+            binding.swipeRefreshLayout.isRefreshing = false
+
+            if (response.isSuccessful) {
+                response.body()?.let { transactions ->
+                    transactionList = transactions.map { transaction ->
+                        TransactionItem(
+                            id = transaction.id,
+                            category = transaction.category,
+                            amount = transaction.amount,
+                            date = transaction.date,
+                            isExpense = transaction.type == "expense"
+                        )
                     }
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Error loading transactions",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+                    // Apply filtering and sorting
+                    applySortAndFilter()
                 }
-            } catch (e: Exception) {
-                binding.progressBar.visibility = View.GONE
-                binding.swipeRefreshLayout.isRefreshing = false
+            } else {
                 Toast.makeText(
                     requireContext(),
-                    "Error: ${e.localizedMessage}",
+                    "Error loading transactions",
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            // Ignoring exceptions during transactions loading
         }
     }
     

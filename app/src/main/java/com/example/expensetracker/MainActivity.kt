@@ -1,8 +1,10 @@
 package com.example.expensetracker
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -269,5 +271,14 @@ class MainActivity : AppCompatActivity(),
     override fun onBalanceChanged() {
         // Update balance after goal deposit/withdraw
         loadBalance()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Hide keyboard to prevent IME callback errors
+        val view = currentFocus ?: binding.root
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.restartInput(view)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
